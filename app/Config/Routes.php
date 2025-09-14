@@ -8,8 +8,13 @@ use CodeIgniter\Router\RouteCollection;
 $routes->setAutoRoute(true);
 
 
-$routes->get('/', 'Home::index');
+$routes->get('/', 'Pages::index');
 $routes->get('/pages', 'Pages::index');
+$routes->get('/pages/about', 'Pages::about');
+$routes->get('/pages/contact', 'Pages::contact');
+$routes->get('/komik', 'Komik::index');
+
+$routes->get('/komik/(:segment)', 'Komik::detail_komik/$1');
 // $routes->get('/coba/index', 'Coba::index');
 // $routes->get('/coba/about', 'Coba::about');
 // $routes->get('/coba/(:any)/(:num)', 'Coba::about/$1/$2');

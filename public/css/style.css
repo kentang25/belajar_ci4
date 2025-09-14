@@ -1,0 +1,7 @@
+.sampul{
+    width: 100px;
+}
+
+.table tr th, .table tr td{
+    vertical-align: middle;
+}
