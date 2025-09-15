@@ -12,7 +12,12 @@
                         <div class="card-body">
                             <h5 class="card-title"><?= $komik['judul'] ?></h5>
                             <p class="card-text"><?= $komik['penulis'] ?></p>
-                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                            <p class="card-text"><?= $komik['slug'] ?></p>
+                            <p class="card-text"><small class="text-body-secondary"><?= $komik['penerbit'] ?></small></p>
+                            <a href="" class="btn btn-sm btn-info">Edit</a>
+                            <a href="" class="btn btn-sm btn-danger">Delete</a>
+                            <br><br>
+                            <a href="/komik" class="btn btn-sm btn-primary">Back</a>
                         </div>
                     </div>
                 </div>

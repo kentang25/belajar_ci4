@@ -7,6 +7,7 @@
  Class M_komik extends Model{
     protected $table    = 'tb_komik';  
     protected $useTimestamps       = true;
+    protected $allowedFields = ['judul', 'slug', 'penulis', 'penerbit', 'sampul'];
 
     public function getKomik($slug = false)
     {
