@@ -44,14 +44,31 @@ class Komik extends BaseController
 
     public function create()
     {
+        session();
         $data = [
-            'title' => 'Form Tambah Data Komik'
+            'title' => 'Form Tambah Data Komik',
+            'validation'  => session()->getFlashdata('validation') ?? \Config\Services::validation()
         ];
         return view('komik/v_create', $data);
     }
 
     public function save()
     {
+        if(!$this->validate([
+            'judul' => [
+                'rules' => 'required|is_unique[tb_komik.judul]',
+                'errors' => [
+                    'required' => '{field}  komik harus diisi.',
+                    'is_unique' => '{field} komik sudah terdaftar.'
+                ]
+            ],
+            'penulis' => 'required',
+            'penerbit' => 'required',
+        ])){
+            $validation = \Config\Services::validation();
+            return redirect()->to('/komik/create')->withInput()->with('validation', $validation);
+        }
+
         $data = [
             'judul' => $this->request->getVar('judul'),
             'slug' => url_title($this->request->getVar('judul'), '-', true),
