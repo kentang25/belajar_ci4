@@ -16,6 +16,7 @@ $routes->get('/komik', 'Komik::index');
 
 $routes->get('/komik/create', 'Komik::create');
 $routes->get('/komik/edit/(:any)', 'Komik::edit/$1');
+
 $routes->delete('/komik/delete/(:num)', 'Komik::delete/$1');
 $routes->post('/komik/save', 'Komik::save');
 $routes->get('/komik/(:any)', 'Komik::detail_komik/$1');
