@@ -117,6 +117,13 @@ class Komik extends BaseController
 
     public function delete($id)
     {
+
+        $komik = $this->komikModel->find($id);
+
+        if($komik['sampul'] != 'default.jpg'){
+            unlink('img/'. $komik['sampul']);
+        }
+
         $this->komikModel->delete($id);
         session()->setFlashdata('pesan', 'Data berhasil dihapus.');
         return redirect()->to('/komik');
@@ -148,18 +155,37 @@ class Komik extends BaseController
 
         if (!$this->validate([
             'judul' => $rule_judul,
+            'sampul' => [
+                'rules' => 'is_image[sampul]|max_size[sampul,2048]|mime_in[sampul,image/jpg,image/jpeg,image/png]',
+                'errors' => [
+                    'is_image'  => 'File harus berupa gambar.',
+                    'max_size'  => 'Ukuran maksimal file 2MB.',
+                    'mime_in'   => 'Tipe file tidak diizinkan.'
+                ]
+            ]
         ])) {
             return redirect()->to('/komik/edit/' . $id)->withInput();
+        }
+
+        $fileSampul = $this->request->getFile('sampul');
+
+        if($fileSampul->getError() == 4){
+            $namaSampul = $this->request->getVar('sampulLama');
+        }else{
+            $namaSampul = $fileSampul->getRandomName();
+            $fileSampul->move('img', $namaSampul);
+            unlink('img/'. $this->request->getVar('sampulLama'));
         }
 
         $slug = url_title($this->request->getVar('judul'), '-', true);
 
         $this->komikModel->save([
-            'id'     => $id,
-            'judul'  => $this->request->getVar('judul'),
-            'slug'   => $slug,
-            'penulis'=> $this->request->getVar('penulis'),
-            'penerbit'=> $this->request->getVar('penerbit'),
+            'id'        => $id,
+            'judul'     => $this->request->getVar('judul'),
+            'slug'      => $slug,
+            'penulis'   => $this->request->getVar('penulis'),
+            'penerbit'  => $this->request->getVar('penerbit'),
+            'sampul'    => $namaSampul
         ]);
 
         session()->setFlashdata('pesan', 'Data berhasil diupdate.');
